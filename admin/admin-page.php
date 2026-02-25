@@ -11,6 +11,17 @@ $report_generator = gd_web_maintenance()->get_report_generator();
 $current_month = date('Y-m');
 $last_month = date('Y-m', strtotime('last month'));
 
+// Handle settings save
+if (isset($_POST['save_settings']) && check_admin_referer('gd_wm_settings')) {
+    update_option('gd_wm_send_monthly_email', isset($_POST['send_monthly_email']) ? 1 : 0);
+    update_option('gd_wm_notification_email', sanitize_email($_POST['notification_email']));
+    echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
+}
+
+// Get settings
+$send_monthly_email = get_option('gd_wm_send_monthly_email', false);
+$notification_email = get_option('gd_wm_notification_email', get_option('admin_email'));
+
 // Get last report
 $report = $report_generator->get_report($last_month);
 
@@ -27,6 +38,45 @@ $report = $report_generator->get_report($last_month);
             <button type="button" class="button" id="take-snapshot">
                 Take Snapshot
             </button>
+        </p>
+    </div>
+    
+    <div class="card">
+        <h2>📧 Email Notifications</h2>
+        <form method="post">
+            <?php wp_nonce_field('gd_wm_settings'); ?>
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <label for="send_monthly_email">Monthly Reports</label>
+                    </th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="send_monthly_email" id="send_monthly_email" value="1" <?php checked($send_monthly_email, 1); ?>>
+                            Send monthly report emails automatically
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="notification_email">Email Address</label>
+                    </th>
+                    <td>
+                        <input type="email" name="notification_email" id="notification_email" value="<?php echo esc_attr($notification_email); ?>" class="regular-text">
+                        <p class="description">Where to send notifications</p>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <button type="submit" name="save_settings" class="button button-primary">Save Settings</button>
+            </p>
+        </form>
+        
+        <h3>Preview Email Templates</h3>
+        <p>
+            <a href="<?php echo admin_url('admin.php?page=gd-web-maintenance-email-preview&preview=monthly'); ?>" class="button" target="_blank">📊 Monthly Report</a>
+            <a href="<?php echo admin_url('admin.php?page=gd-web-maintenance-email-preview&preview=alert'); ?>" class="button" target="_blank">⚠️ Alert Email</a>
+            <a href="<?php echo admin_url('admin.php?page=gd-web-maintenance-email-preview&preview=uninstall'); ?>" class="button" target="_blank">🔌 Uninstall Email</a>
         </p>
     </div>
     

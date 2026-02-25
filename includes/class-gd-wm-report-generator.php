@@ -79,6 +79,12 @@ class GD_WM_Report_Generator {
         // Save report to database
         $this->save_report($month, $report);
         
+        // Send email notification (optional)
+        $send_email = get_option('gd_wm_send_monthly_email', false);
+        if ($send_email) {
+            $this->send_monthly_email($report);
+        }
+        
         return $report;
     }
     
@@ -397,6 +403,33 @@ class GD_WM_Report_Generator {
         ));
         
         return $report_data ? json_decode($report_data, true) : null;
+    }
+    
+    /**
+     * Send monthly email
+     */
+    private function send_monthly_email($report) {
+        $admin_email = get_option('admin_email');
+        $site_name = get_bloginfo('name');
+        
+        // Generate HTML email
+        $email_html = GD_WM_Email_Templates::monthly_report($report);
+        
+        // Email headers
+        $headers = array(
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . $site_name . ' <' . $admin_email . '>'
+        );
+        
+        $month_name = date('F Y', strtotime($report['month'] . '-01'));
+        
+        // Send email
+        wp_mail(
+            $admin_email,
+            '📊 Monthly Maintenance Report - ' . $month_name,
+            $email_html,
+            $headers
+        );
     }
     
     /**

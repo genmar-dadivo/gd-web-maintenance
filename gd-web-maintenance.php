@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: GD Web Maintenance Pro
- * Plugin URI: https://github.com/yourusername/gd-web-maintenance
+ * Plugin URI: https://github.com/genmar-dadivo/gd-web-maintenance
  * Description: Comprehensive website maintenance tracking with auto-updates from GitHub
- * Version: 2.0.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Version: 2.0.1
+ * Author: Genmar Dadivo
+ * Author URI: https://genmar.cgtechnprints.app/
  * License: GPL v2 or later
  * Text Domain: gd-web-maintenance
  */
@@ -20,7 +20,7 @@ define('GD_WM_VERSION', '2.0.0');
 define('GD_WM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GD_WM_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GD_WM_PLUGIN_FILE', __FILE__);
-define('GD_WM_GITHUB_REPO', 'yourusername/gd-web-maintenance'); // Change this!
+define('GD_WM_GITHUB_REPO', 'genmar-dadivo/gd-web-maintenance'); // Change this!
 
 // Require dependencies
 require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-plugin-tracker.php';
@@ -29,6 +29,7 @@ require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-wordfence.php';
 require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-site-health.php';
 require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-rest-api.php';
 require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-github-updater.php';
+require_once GD_WM_PLUGIN_DIR . 'includes/class-gd-wm-email-templates.php';
 
 /**
  * Main Plugin Class
@@ -191,6 +192,16 @@ class GD_Web_Maintenance {
             'gd-web-maintenance',
             array($this, 'admin_page')
         );
+        
+        // Email preview page (hidden from menu)
+        add_submenu_page(
+            null,  // No parent = hidden
+            'Email Preview',
+            'Email Preview',
+            'manage_options',
+            'gd-web-maintenance-email-preview',
+            array($this, 'email_preview_page')
+        );
     }
     
     /**
@@ -198,6 +209,13 @@ class GD_Web_Maintenance {
      */
     public function admin_page() {
         include GD_WM_PLUGIN_DIR . 'admin/admin-page.php';
+    }
+    
+    /**
+     * Email preview page
+     */
+    public function email_preview_page() {
+        include GD_WM_PLUGIN_DIR . 'admin/email-preview.php';
     }
     
     /**
