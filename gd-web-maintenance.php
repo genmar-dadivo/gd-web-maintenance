@@ -3,7 +3,7 @@
  * Plugin Name: GD Web Maintenance Pro
  * Plugin URI: https://github.com/genmar-dadivo/gd-web-maintenance
  * Description: Comprehensive website maintenance tracking with auto-updates from GitHub
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Genmar Dadivo
  * Author URI: https://genmar.cgtechnprints.app/
  * License: GPL v2 or later
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('GD_WM_VERSION', '2.0.1');
+define('GD_WM_VERSION', '2.0.2');
 define('GD_WM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GD_WM_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GD_WM_PLUGIN_FILE', __FILE__);
