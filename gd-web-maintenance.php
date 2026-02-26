@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('GD_WM_VERSION', '2.0.0');
+define('GD_WM_VERSION', '2.0.1');
 define('GD_WM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GD_WM_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GD_WM_PLUGIN_FILE', __FILE__);
